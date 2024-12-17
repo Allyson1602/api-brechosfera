@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type LocationMap {
+  id: Int!
+
+  """latitude"""
+  latitude: Float!
+
+  """longitude"""
+  longitude: Float!
+}
+
+type ResponseMessage {
+  message: String!
+}
+
+type Query {
+  locationMap(id: Int!): LocationMap!
+}
+
+type Mutation {
+  createLocationMap(createLocationMapInput: CreateLocationMapInput!): LocationMap!
+  updateLocationMap(updateLocationMapInput: UpdateLocationMapInput!): ResponseMessage!
+  removeLocationMap(id: Int!): LocationMap!
+}
+
+input CreateLocationMapInput {
+  """latitude"""
+  latitude: Float!
+
+  """longitude"""
+  longitude: Float!
+}
+
+input UpdateLocationMapInput {
+  """latitude"""
+  latitude: Float
+
+  """longitude"""
+  longitude: Float
+  id: Int!
+}
