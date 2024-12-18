@@ -5,9 +5,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { LocationMapModule } from './location-map/location-map.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostgresConfigService } from 'postgres.config.service';
-import { ConfigModule } from '@nestjs/config';
+import { LocationMap } from './location-map/entities/location-map.entity';
 
 @Module({
   imports: [
@@ -19,9 +19,20 @@ import { ConfigModule } from '@nestjs/config';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      useClass: PostgresConfigService,
-      inject: [PostgresConfigService],
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USER'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [LocationMap],
+        synchronize: true,
+      }),
     }),
   ],
   controllers: [AppController],

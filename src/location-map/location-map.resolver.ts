@@ -1,24 +1,10 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ObjectType,
-  Field,
-} from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { LocationMapService } from './location-map.service';
 import { LocationMap } from './entities/location-map.entity';
 import { CreateLocationMapInput } from './dto/create-location-map.input';
 import { UpdateLocationMapInput } from './dto/update-location-map.input';
 
-@ObjectType()
-export class ResponseMessage {
-  @Field()
-  message: string;
-}
-
-@Resolver(() => ResponseMessage)
+@Resolver(() => LocationMap)
 export class LocationMapResolver {
   constructor(private readonly locationMapService: LocationMapService) {}
 
@@ -30,17 +16,17 @@ export class LocationMapResolver {
     return this.locationMapService.create(createLocationMapInput);
   }
 
-  @Query(() => [LocationMap], { name: 'locationMap' })
+  @Query(() => [LocationMap])
   findAll() {
     return this.locationMapService.findAll();
   }
 
-  @Query(() => LocationMap, { name: 'locationMap' })
+  @Query(() => LocationMap)
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.locationMapService.findOne(id);
   }
 
-  @Mutation(() => ResponseMessage)
+  @Mutation(() => LocationMap)
   updateLocationMap(
     @Args('updateLocationMapInput')
     updateLocationMapInput: UpdateLocationMapInput,

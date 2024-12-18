@@ -12,17 +12,14 @@ type LocationMap {
   longitude: Float!
 }
 
-type ResponseMessage {
-  message: String!
-}
-
 type Query {
-  locationMap(id: Int!): LocationMap!
+  findAll: [LocationMap!]!
+  findOne(id: Int!): LocationMap!
 }
 
 type Mutation {
   createLocationMap(createLocationMapInput: CreateLocationMapInput!): LocationMap!
-  updateLocationMap(updateLocationMapInput: UpdateLocationMapInput!): ResponseMessage!
+  updateLocationMap(updateLocationMapInput: UpdateLocationMapInput!): LocationMap!
   removeLocationMap(id: Int!): LocationMap!
 }
 
