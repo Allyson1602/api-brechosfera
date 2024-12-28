@@ -8,6 +8,8 @@ import { LocationMapModule } from './location-map/location-map.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocationMap } from './location-map/entities/location-map.entity';
+import { BaazarModule } from './baazar/baazar.module';
+import { Baazar } from './baazar/entities/baazar.entity';
 
 @Module({
   imports: [
@@ -19,7 +21,6 @@ import { LocationMap } from './location-map/entities/location-map.entity';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -30,10 +31,12 @@ import { LocationMap } from './location-map/entities/location-map.entity';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [LocationMap],
+        entities: [LocationMap, Baazar],
+        url: configService.get('DATABASE_URL'),
         synchronize: true,
       }),
     }),
+    BaazarModule,
   ],
   controllers: [AppController],
   providers: [AppService],

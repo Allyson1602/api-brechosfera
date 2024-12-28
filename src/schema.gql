@@ -2,6 +2,40 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Baazar {
+  id: Float!
+  name: String!
+  logoImage: String!
+  images: [String!]!
+  itemsType: [BaazarItemType!]!
+  averagePrice: Float!
+  evaluation: Float!
+  openingHours: [String!]!
+  locationMap: LocationMap!
+}
+
+"""Tipos de itens disponíveis em um bazar"""
+enum BaazarItemType {
+  MENSWEAR
+  WOMENSWEAR
+  CHILDRENSWEAR
+  SHOES
+  JEWELRY
+  COSTUME_JEWELRY
+  TOYS
+  BAGS
+  ACCESSORIES
+  FURNITURE
+  PERSONAL_CARE
+  MEDIA
+  BOOKS
+  ELECTRONICS
+  TOOLS_AND_EQUIPMENT
+  KITCHENWARE
+  HOME_DECOR
+  KNICK_KNACKS
+}
+
 type LocationMap {
   id: Int!
 
@@ -10,17 +44,23 @@ type LocationMap {
 
   """longitude"""
   longitude: Float!
+  baazar: Baazar!
 }
 
 type Query {
   findAll: [LocationMap!]!
   findOne(id: Int!): LocationMap!
+  findAllBaazars: [Baazar!]!
+  baazar(id: Int!): Baazar!
 }
 
 type Mutation {
   createLocationMap(createLocationMapInput: CreateLocationMapInput!): LocationMap!
   updateLocationMap(updateLocationMapInput: UpdateLocationMapInput!): LocationMap!
   removeLocationMap(id: Int!): LocationMap!
+  createBaazar(createBaazarInput: CreateBaazarInput!): Baazar!
+  updateBaazar(updateBaazarInput: UpdateBaazarInput!): Baazar!
+  removeBaazar(id: Int!): Baazar!
 }
 
 input CreateLocationMapInput {
@@ -37,5 +77,28 @@ input UpdateLocationMapInput {
 
   """longitude"""
   longitude: Float
+  id: Int!
+}
+
+input CreateBaazarInput {
+  name: String!
+  logoImage: String!
+  images: [String!]!
+  itemsType: [BaazarItemType!]!
+  averagePrice: Float!
+  evaluation: Float!
+  openingHours: [String!]!
+  locationMap: CreateLocationMapInput!
+}
+
+input UpdateBaazarInput {
+  name: String
+  logoImage: String
+  images: [String!]
+  itemsType: [BaazarItemType!]
+  averagePrice: Float
+  evaluation: Float
+  openingHours: [String!]
+  locationMap: CreateLocationMapInput
   id: Int!
 }
